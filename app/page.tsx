@@ -1,64 +1,49 @@
 "use client";
 import { useState } from "react";
 
-const PLANS = [
+interface Plan {
+  id: string;
+  name: string;
+  price: string;
+  emoji: string;
+  hex: string;
+  bg: string;
+  tc: string;
+  limit: string;
+  popular: boolean;
+  features: string[];
+}
+
+const PLANS: Plan[] = [
   {
-    id: "basic",
-    name: "Basic",
-    price: "$49",
-    emoji: "💬",
-    hex: "#16a34a",
-    bg: "#f0fdf4",
-    tc: "#14532d",
-    limit: "1,500 orders/mo",
-    popular: false,
+    id: "basic", name: "Basic", price: "$49", emoji: "💬",
+    hex: "#16a34a", bg: "#f0fdf4", tc: "#14532d", limit: "1,500 orders/mo", popular: false,
     features: ["WhatsApp integration","Internal CRM dashboard","Auto order capture","Auto order received message","Manual tracking entry","Admin panel"],
   },
   {
-    id: "smart",
-    name: "Smart",
-    price: "$99",
-    emoji: "⚡",
-    hex: "#2563eb",
-    bg: "#eff6ff",
-    tc: "#1e3a8a",
-    limit: "10,000 orders/mo",
-    popular: true,
+    id: "smart", name: "Smart", price: "$99", emoji: "⚡",
+    hex: "#2563eb", bg: "#eff6ff", tc: "#1e3a8a", limit: "10,000 orders/mo", popular: true,
     features: ["Everything in Basic","Shopify webhooks","Auto order sync","TCS / Leopards courier API","Auto tracking messages","Follow-up automation"],
   },
   {
-    id: "business",
-    name: "Business",
-    price: "$199",
-    emoji: "🏪",
-    hex: "#d97706",
-    bg: "#fffbeb",
-    tc: "#92400e",
-    limit: "50,000 orders/mo",
-    popular: false,
+    id: "business", name: "Business", price: "$199", emoji: "🏪",
+    hex: "#d97706", bg: "#fffbeb", tc: "#92400e", limit: "50,000 orders/mo", popular: false,
     features: ["Everything in Smart","POS system","Inventory management","Multi-store support","Low stock alerts","AI pricing insights"],
   },
   {
-    id: "aios",
-    name: "AI OS",
-    price: "$399",
-    emoji: "🤖",
-    hex: "#7c3aed",
-    bg: "#f5f3ff",
-    tc: "#4c1d95",
-    limit: "Unlimited",
-    popular: false,
+    id: "aios", name: "AI OS", price: "$399", emoji: "🤖",
+    hex: "#7c3aed", bg: "#f5f3ff", tc: "#4c1d95", limit: "Unlimited", popular: false,
     features: ["Everything in Business","Voice AI verification","White-label dashboards","Full automation workflows","Advanced analytics","Plugin marketplace"],
   },
 ];
 
 export default function Home() {
-  const [modal, setModal] = useState(null);
+  const [modal, setModal] = useState<Plan | null>(null);
   const [storeName, setStoreName] = useState("");
   const [payment, setPayment] = useState("");
   const [step, setStep] = useState(1);
 
-  function openModal(plan) {
+  function openModal(plan: Plan) {
     setModal(plan);
     setStep(1);
     setStoreName("");
@@ -94,7 +79,7 @@ export default function Home() {
           Connect WhatsApp, Shopify, and your courier in one dashboard.
         </p>
         <button
-          onClick={() => document.getElementById("pricing").scrollIntoView({behavior:"smooth"})}
+          onClick={() => document.getElementById("pricing")!.scrollIntoView({behavior:"smooth"})}
           style={{padding:"14px 28px", background:"#2563eb", color:"#fff", border:"none", borderRadius:"12px", fontSize:"15px", fontWeight:"700", cursor:"pointer"}}>
           View Plans
         </button>
@@ -139,7 +124,7 @@ export default function Home() {
       </div>
 
       {modal && (
-        <div style={{position:"fixed", inset:"0", background:"rgba(0,0,0,0.5)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:"1000"}}>
+        <div style={{position:"fixed", inset:"0", background:"rgba(0,0,0,0.5)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:1000}}>
           <div style={{background:"#fff", borderRadius:"20px", padding:"36px", width:"100%", maxWidth:"420px", position:"relative", boxShadow:"0 24px 64px rgba(0,0,0,0.15)"}}>
             <button onClick={() => setModal(null)} style={{position:"absolute", top:"14px", right:"14px", background:"#f3f4f6", border:"none", borderRadius:"8px", width:"30px", height:"30px", cursor:"pointer", fontSize:"14px"}}>✕</button>
             {step === 1 ? (
@@ -180,7 +165,7 @@ export default function Home() {
             ) : (
               <div style={{textAlign:"center", padding:"20px 0"}}>
                 <div style={{fontSize:"48px", marginBottom:"16px"}}>✅</div>
-                <h2 style={{fontSize:"20px", fontWeight:"800", marginBottom:"8px", color:"#0f1117"}}>Activating your store…</h2>
+                <h2 style={{fontSize:"20px", fontWeight:"800", marginBottom:"8px", color:"#0f1117"}}>Activating your store</h2>
                 <p style={{fontSize:"13px", color:"#6b7280"}}>Setting up {storeName} on the {modal.name} plan.</p>
               </div>
             )}
