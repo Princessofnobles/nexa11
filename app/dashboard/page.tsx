@@ -18,15 +18,24 @@ const CUSTOMERS = [
 
 const MESSAGES = [
   { from:"customer", name:"Ahmed", text:"Hi, I want to order Nike Air Max 270 size 42", time:"10:02 AM" },
-  { from:"bot", text:"✅ Order received! Your order #N1042 has been placed.", time:"10:02 AM" },
+  { from:"bot", name:"", text:"Order received! Your order #N1042 has been placed.", time:"10:02 AM" },
   { from:"customer", name:"Sara", text:"What is the status of my order?", time:"10:15 AM" },
-  { from:"bot", text:"📦 Your order #N1041 has been delivered! Thank you.", time:"10:15 AM" },
+  { from:"bot", name:"", text:"Your order #N1041 has been delivered! Thank you.", time:"10:15 AM" },
   { from:"customer", name:"Omar", text:"Can I get tracking for #N1039?", time:"11:30 AM" },
-  { from:"bot", text:"🚚 Tracking #TCS-88291 — your order is on the way! Expected: May 21.", time:"11:30 AM" },
+  { from:"bot", name:"", text:"Tracking #TCS-88291 your order is on the way! Expected: May 21.", time:"11:30 AM" },
 ];
 
-function StatusBadge({ status }: { status: string }) {
- const colors: { [key: string]: { bg: string; color: string } } = {
+interface BadgeProps {
+  status: string;
+}
+
+interface AvatarProps {
+  letter: string;
+  size?: number;
+}
+
+function StatusBadge({ status }: BadgeProps) {
+  const colors: { [key: string]: { bg: string; color: string } } = {
     Shipped:    { bg:"#eff6ff", color:"#1e3a8a" },
     Delivered:  { bg:"#f0fdf4", color:"#14532d" },
     Processing: { bg:"#fffbeb", color:"#92400e" },
@@ -42,7 +51,7 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-function Avatar({ letter, size = 36 }) {
+function Avatar({ letter, size = 36 }: AvatarProps) {
   return (
     <div style={{width:size, height:size, borderRadius:"50%", background:"#eff6ff", color:"#2563eb", fontWeight:"700", fontSize:size*0.38, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0}}>
       {letter}
@@ -71,7 +80,6 @@ export default function Dashboard() {
   return (
     <div style={{display:"flex", minHeight:"100vh", background:"#f4f6f9", fontFamily:"Arial, sans-serif"}}>
 
-      {/* SIDEBAR */}
       <div style={{width:"220px", background:"#fff", borderRight:"1px solid #e8eaf0", display:"flex", flexDirection:"column", padding:"0 0 24px", flexShrink:0}}>
         <div style={{padding:"20px 20px 16px", borderBottom:"1px solid #e8eaf0"}}>
           <div style={{fontSize:"18px", fontWeight:"700", color:"#0f1117"}}>NEXA<span style={{color:"#2563eb"}}>11</span> AI</div>
@@ -93,16 +101,14 @@ export default function Dashboard() {
 
         <div style={{padding:"0 12px"}}>
           <div style={{background:"#eff6ff", borderRadius:"12px", padding:"14px"}}>
-            <div style={{fontSize:"12px", fontWeight:"700", color:"#2563eb", marginBottom:"4px"}}>🤖 AI Automation</div>
+            <div style={{fontSize:"12px", fontWeight:"700", color:"#2563eb", marginBottom:"4px"}}>AI Automation</div>
             <div style={{fontSize:"11px", color:"#6b7280", lineHeight:"1.5"}}>All workflows running. 47 messages sent today.</div>
           </div>
         </div>
       </div>
 
-      {/* MAIN */}
       <div style={{flex:1, padding:"28px", overflowY:"auto"}}>
 
-        {/* TOP BAR */}
         <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"28px"}}>
           <div>
             <h1 style={{fontSize:"22px", fontWeight:"800", color:"#0f1117", marginBottom:"2px"}}>
@@ -111,12 +117,11 @@ export default function Dashboard() {
             <p style={{fontSize:"13px", color:"#9ca3af"}}>Wednesday, May 20, 2026</p>
           </div>
           <div style={{display:"flex", gap:"10px", alignItems:"center"}}>
-            <div style={{background:"#fff", border:"1px solid #e8eaf0", borderRadius:"10px", padding:"8px 16px", fontSize:"13px", color:"#374151"}}>🔔 3 new orders</div>
+            <div style={{background:"#fff", border:"1px solid #e8eaf0", borderRadius:"10px", padding:"8px 16px", fontSize:"13px", color:"#374151"}}>3 new orders</div>
             <div style={{width:"38px", height:"38px", borderRadius:"50%", background:"#eff6ff", color:"#2563eb", fontWeight:"700", display:"flex", alignItems:"center", justifyContent:"center"}}>M</div>
           </div>
         </div>
 
-        {/* OVERVIEW */}
         {activeTab === "overview" && (
           <div>
             <div style={{display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(180px, 1fr))", gap:"16px", marginBottom:"24px"}}>
@@ -138,7 +143,7 @@ export default function Dashboard() {
                   <Avatar letter={o.customer[0]} size={32} />
                   <div style={{flex:1}}>
                     <div style={{fontSize:"13px", fontWeight:"600", color:"#0f1117"}}>{o.customer}</div>
-                    <div style={{fontSize:"12px", color:"#9ca3af"}}>{o.id} • {o.product}</div>
+                    <div style={{fontSize:"12px", color:"#9ca3af"}}>{o.id} - {o.product}</div>
                   </div>
                   <div style={{fontSize:"13px", fontWeight:"700", color:"#0f1117"}}>{o.amount}</div>
                   <StatusBadge status={o.status} />
@@ -148,7 +153,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* ORDERS */}
         {activeTab === "orders" && (
           <div style={{background:"#fff", borderRadius:"16px", boxShadow:"0 2px 8px rgba(0,0,0,0.05)", overflow:"hidden"}}>
             <div style={{padding:"20px 24px", borderBottom:"1px solid #f3f4f6", display:"flex", justifyContent:"space-between", alignItems:"center"}}>
@@ -184,7 +188,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* CRM */}
         {activeTab === "crm" && (
           <div style={{background:"#fff", borderRadius:"16px", boxShadow:"0 2px 8px rgba(0,0,0,0.05)", overflow:"hidden"}}>
             <div style={{padding:"20px 24px", borderBottom:"1px solid #f3f4f6"}}>
@@ -211,7 +214,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* WHATSAPP */}
         {activeTab === "whatsapp" && (
           <div style={{background:"#fff", borderRadius:"16px", boxShadow:"0 2px 8px rgba(0,0,0,0.05)", overflow:"hidden"}}>
             <div style={{padding:"20px 24px", borderBottom:"1px solid #f3f4f6", display:"flex", alignItems:"center", gap:"8px"}}>
@@ -239,7 +241,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* ANALYTICS */}
         {activeTab === "analytics" && (
           <div style={{display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(280px, 1fr))", gap:"16px"}}>
             {[
