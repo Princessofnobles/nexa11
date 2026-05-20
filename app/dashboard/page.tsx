@@ -25,7 +25,7 @@ const MESSAGES = [
   { from:"bot", text:"🚚 Tracking #TCS-88291 — your order is on the way! Expected: May 21.", time:"11:30 AM" },
 ];
 
-function StatusBadge({ status }) {
+function StatusBadge({ status }: { status: string }) {
   const colors = {
     Shipped:    { bg:"#eff6ff", color:"#1e3a8a" },
     Delivered:  { bg:"#f0fdf4", color:"#14532d" },
