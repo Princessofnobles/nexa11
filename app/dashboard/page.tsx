@@ -26,7 +26,7 @@ const MESSAGES = [
 ];
 
 function StatusBadge({ status }: { status: string }) {
-  const colors = {
+ const colors: { [key: string]: { bg: string; color: string } } = {
     Shipped:    { bg:"#eff6ff", color:"#1e3a8a" },
     Delivered:  { bg:"#f0fdf4", color:"#14532d" },
     Processing: { bg:"#fffbeb", color:"#92400e" },
